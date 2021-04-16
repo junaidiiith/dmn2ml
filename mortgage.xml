@@ -1,0 +1,1466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_0k1un0c" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <businessKnowledgeModel id="BusinessKnowledgeModel_189ecfo" name="Term options decision table" />
+  <businessKnowledgeModel id="BusinessKnowledgeModel_0c6n241" name="Risk based operations decision table">
+    <authorityRequirement id="AuthorityRequirement_0ejtnoy">
+      <requiredAuthority href="#KnowledgeSource_1fioz6k" />
+    </authorityRequirement>
+    <authorityRequirement id="AuthorityRequirement_1tqq7r2">
+      <requiredAuthority href="#KnowledgeSource_1of2fe0" />
+    </authorityRequirement>
+  </businessKnowledgeModel>
+  <businessKnowledgeModel id="BusinessKnowledgeModel_1ice1w6" name="Lien options decision table" />
+  <knowledgeSource id="KnowledgeSource_1of2fe0" name="Lender pricing policy" />
+  <knowledgeSource id="KnowledgeSource_1fioz6k" name="GSE Loan amount guidelines" />
+  <businessKnowledgeModel id="BusinessKnowledgeModel_0dejupm" name="Determine product decision table" />
+  <businessKnowledgeModel id="BusinessKnowledgeModel_0e5zq40" name="Determine loan constratints" />
+  <inputData id="InputData_0fmen54" name="Lender Products" />
+  <knowledgeSource id="KnowledgeSource_0nyig68" name="Secondary markets">
+    <authorityRequirement id="AuthorityRequirement_0pq9j8m">
+      <requiredDecision href="#Decision_0k2m0ex" />
+    </authorityRequirement>
+  </knowledgeSource>
+  <inputData id="InputData_1iay1tk" name="Credit information" />
+  <inputData id="InputData_0v1juyd" name="Client objetives and preferences" />
+  <inputData id="InputData_0s73ph4" name="Real time priciing data" />
+  <decision id="Decision_1nr71b4" name="Determine lien based scenarios">
+    <knowledgeRequirement id="KnowledgeRequirement_0gqlltv">
+      <requiredKnowledge href="#BusinessKnowledgeModel_1ice1w6" />
+    </knowledgeRequirement>
+    <decisionTable id="DecisionTable_19ysmxf">
+      <input id="InputClause_0ocrwwb" label="Requested Objective" biodi:width="192">
+        <inputExpression id="LiteralExpression_0yyozov" typeRef="string">
+          <text>reqobj</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1x4ud94">
+          <text>"LMP","LDP","BE","RR"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1s8z6ik" label="Requested Category">
+        <inputExpression id="LiteralExpression_0gp8y02" typeRef="string">
+          <text>reqcat</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1gwq3go">
+          <text>"Fixed","ARM"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1wr0cvp" label="Requested LTV" biodi:width="192">
+        <inputExpression id="LiteralExpression_0qp78nc" typeRef="string">
+          <text>reqltv</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0mphih6" label="Recommended Program" name="recProg" typeRef="string" />
+      <output id="OutputClause_1g54vcf" label="Recommended Category" name="reqCat" typeRef="string" />
+      <output id="OutputClause_006ly8n" label="Recommended Term" name="reqterm" typeRef="string" />
+      <output id="OutputClause_09fjtev" label="Recommended Liens" name="recliens" typeRef="string" />
+      <output id="OutputClause_02oq2wf" label="Recommended 1st Liens" name="recfliens" typeRef="string" />
+      <output id="OutputClause_11jtdp7" label="Recommended 2nd Liens" name="recsliens" typeRef="string" />
+      <output id="OutputClause_0qosekj" label="Recommended Loan Amount" name="recloanamt" typeRef="string" />
+      <rule id="DecisionRule_182ljv1">
+        <inputEntry id="UnaryTests_12hko03">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a26cx9">
+          <text>"Fixed"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1njntbc">
+          <text>&gt; 85</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ovxc11">
+          <text>:=$R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0imlumd">
+          <text>:=$R{Requested Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13wn8dv">
+          <text>:=$R{Requested Term}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dkzlea">
+          <text>:=$R{Requested Liens}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bivxy4">
+          <text>:=R{Requested 1st Liens}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tfvv0r">
+          <text>:=$R{Requested 2nd Liens}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sd3k53">
+          <text>:=$R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_0u981gn" name="Determine risk based scenarios">
+    <informationRequirement id="InformationRequirement_1y4075x">
+      <requiredInput href="#InputData_1iay1tk" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1b2vll3">
+      <requiredInput href="#InputData_0v1juyd" />
+    </informationRequirement>
+    <knowledgeRequirement id="KnowledgeRequirement_1bicbg9">
+      <requiredKnowledge href="#BusinessKnowledgeModel_0c6n241" />
+    </knowledgeRequirement>
+    <decisionTable id="DecisionTable_11paufc">
+      <input id="InputClause_00bxufx" label="Requested Objective">
+        <inputExpression id="LiteralExpression_1w8tjg1" typeRef="string">
+          <text>reqobj</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1w0dzc6">
+          <text>"LMP","LDP","RR","BE"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1tzxini" label="Requested Program">
+        <inputExpression id="LiteralExpression_07d9oed" typeRef="string">
+          <text>reqProg</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0483q90">
+          <text>"Prime","Non Prime","FHA","JUMBO"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_03pxqsu" label="Requested LTV">
+        <inputExpression id="LiteralExpression_0id3ieq" typeRef="string">
+          <text>reqltv</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_109f9bf" label="Requested Amount">
+        <inputExpression id="LiteralExpression_1jns8pc" typeRef="string">
+          <text>reqamt</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0w5f7pw" label="Recommended Program" name="recProg" typeRef="string" />
+      <output id="OutputClause_0gslfc6" label="Recommended Category" name="recCat" typeRef="string" biodi:width="231">
+        <outputValues id="UnaryTests_1l26fxt">
+          <text>"AMR","Fixed"</text>
+        </outputValues>
+      </output>
+      <output id="OutputClause_0ok9vm5" label="Recommended Term" name="recterm" typeRef="string" />
+      <output id="OutputClause_0ln33k4" label="Recommended Liens" name="recommliens" typeRef="string" biodi:width="192" />
+      <output id="OutputClause_0xshilq" label="Recommended 1st Liens" name="recfliens" typeRef="string" />
+      <output id="OutputClause_0pm1q7b" label="Recommended 2nd Liens" name="recsliens" typeRef="string" />
+      <output id="OutputClause_1erfq65" label="Recommended Loan Amount" name="recamt" typeRef="string" />
+      <rule id="DecisionRule_0cpoj5s">
+        <inputEntry id="UnaryTests_1mqy63b">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12k62n4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kz474n">
+          <text>&gt; 85</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ec8l5j">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0oyqd3g">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09kciao">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12mnd1h">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1iqqb82">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0g8vl5s">
+          <text>85</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ahgxkq">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fftdw9">
+          <text>:= 85*$R{Requested Loan Amount} /$R{Requested LTV}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0viixdj">
+        <inputEntry id="UnaryTests_1p76rkn">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u8c2lr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qh4heg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b7r8bv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05dhdw1">
+          <text>Prime</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fy1b3d">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1uyfapg">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0svtfyr">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lkvhga">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jt01b8">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1z04nmf">
+          <text>:=$R{Requested
+  Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00p6kc9">
+        <inputEntry id="UnaryTests_1ay0kn5">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hhxig8">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0my4bi9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1r9gqes">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qiqmye">
+          <text>:=$R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01mipdb">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nkrezx">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01wp7wp">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0d61o1y">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13urrx5">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1w1y90u">
+          <text>417000</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14cqamd">
+        <inputEntry id="UnaryTests_03ux3ff">
+          <text>"LDP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ncc7mg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pgin6l">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12n9dla">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13q8eqj">
+          <text>FHA</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_125pse4">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0j8f36a">
+          <text>:= $R{Requested Product Category}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n5o7ax">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ra8kq5">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f10d00">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1f49rrh">
+          <text>-1</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_1mhn5bu" name="Determine Term based Scenarios">
+    <knowledgeRequirement id="KnowledgeRequirement_1xl76r0">
+      <requiredKnowledge href="#BusinessKnowledgeModel_189ecfo" />
+    </knowledgeRequirement>
+    <decisionTable id="DecisionTable_0ysve2d">
+      <input id="InputClause_1i9t8vh" label="Requested Objective">
+        <inputExpression id="LiteralExpression_1ja2yt0" typeRef="string">
+          <text>objective</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0m9klt1">
+          <text>"LMP","LDP","BE","RR"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0vel4zk" label="Requested Category">
+        <inputExpression id="LiteralExpression_1vud1xo" typeRef="string">
+          <text>category</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0ov2p45" label="Requested Term">
+        <inputExpression id="LiteralExpression_0el1vrn" typeRef="string">
+          <text>prodterm</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1lbr9xm" label="Recommended Program" name="recprog" typeRef="string" />
+      <output id="OutputClause_1rl868w" label="Recommended Category" name="reccat" typeRef="string" />
+      <output id="OutputClause_0at54bu" label="Recommended Term" name="recommTerm" typeRef="string" />
+      <output id="OutputClause_01z20m4" label="Recommended Liens" name="recommliens" typeRef="string" />
+      <output id="OutputClause_02nk18v" label="Recommended 1st Liens TV" name="recfliens" typeRef="string" />
+      <output id="OutputClause_1fviak0" label="Recommended 2nd Liens TV" name="recsliens" typeRef="string" />
+      <output id="OutputClause_150yigx" label="Recommended Loan Amount" name="recamnt" typeRef="string" />
+      <rule id="DecisionRule_196wu25">
+        <inputEntry id="UnaryTests_0fsrbi1">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yl5bxf">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fhyq9b">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p5hd13">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0za5k53">
+          <text>ARM</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0m6ipsb">
+          <text>3/1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0562pck">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1g8nphz">
+          <text>:=${Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xai6qn">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08sg2an">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0pztnva">
+        <inputEntry id="UnaryTests_00nq0fz">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1p0ttaf">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_128nu13">
+          <text>15</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02qn9fp">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j7hvf6">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_176txlw">
+          <text>20</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xt8l0r">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hn63ll">
+          <text>:=${Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09mht65">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kp2w6y">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1wlncyl">
+        <inputEntry id="UnaryTests_03rxs88">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18h3853">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xrgzwc">
+          <text>20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09ihv7t">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qei03e">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_161tlf8">
+          <text>30</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zdy8uk">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07zq77z">
+          <text>:=${Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1651qxd">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i1k72o">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02hnvls">
+        <inputEntry id="UnaryTests_1e6u20y">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c5r10i">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mupyid">
+          <text>30</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rsam7g">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gtysi4">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pgdqlb">
+          <text>40</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nzmys5">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dduxkg">
+          <text>:=${Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fvil4j">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tuu2oo">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0p4o9qt">
+        <inputEntry id="UnaryTests_0csvplq">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jf9xki">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19gdie0">
+          <text>7/1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bk3w3k">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1q2d0up">
+          <text>ARM</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s27a7s">
+          <text>3/1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05ifa5n">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dqozed">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v0u14w">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0h443vr">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rd9puw">
+        <inputEntry id="UnaryTests_019u5as">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lbgpx7">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0opkj3h">
+          <text>5/1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_096q83c">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18s8935">
+          <text>ARM</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rga4z5">
+          <text>3/1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wu33ck">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lqg5c2">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15t3q8b">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sdzqyb">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07bdktu">
+        <inputEntry id="UnaryTests_1llf5rq">
+          <text>"LMP"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lsani2">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tpghjf">
+          <text>3/1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jksn1c">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1m7v4qo">
+          <text>ARM</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0g2fwvf">
+          <text>1/1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j93bsg">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qdzsl0">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07r94k4">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16ufwoa">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1s3kxnj">
+        <inputEntry id="UnaryTests_19t6yd7">
+          <text>"BE"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yr02rr">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hy9ygn">
+          <text>30</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_068ybg2">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0r1ya4h">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11ggc34">
+          <text>20</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nqs7jr">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jhls6t">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gtaq3y">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rtthyw">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17ugoij">
+        <inputEntry id="UnaryTests_1ovh07r">
+          <text>"BE"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hxi4q5">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c4d65g">
+          <text>20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1b4t0k9">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0h52m5v">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_128079s">
+          <text>15</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0j4xqkg">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vyd10t">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0llvpfs">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ujhtjg">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10qu8wf">
+        <inputEntry id="UnaryTests_0j4641v">
+          <text>"BE"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tswska">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_019rbp8">
+          <text>15</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0m2n1gs">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_138242w">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bepgi7">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cryb6p">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07k13c5">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11etvt9">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ax2gt2">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1379ijm">
+        <inputEntry id="UnaryTests_0o5ji6i">
+          <text>"BE"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a417wj">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03zwxie">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yg6giu">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0evqhag">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05soma1">
+          <text>20</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sjvg74">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nor2yx">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nnsogv">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0otemt6">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ddfa89">
+        <inputEntry id="UnaryTests_1one8tu">
+          <text>"RR"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_180900e">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_001s1dx">
+          <text>30</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1r3c2j4">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15wz02z">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mxt5id">
+          <text>20</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vx0uil">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jrkbli">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05sgya3">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y5gq3i">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10cwadc">
+        <inputEntry id="UnaryTests_0bn68vf">
+          <text>"RR"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kwzl2o">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vtss09">
+          <text>20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1k07mf8">
+          <text>:= $R{Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_119zx9s">
+          <text>Fixed</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xstn6a">
+          <text>15</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nwf7ad">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jhwg15">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00d3wbl">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1aac420">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08mnimr">
+        <inputEntry id="UnaryTests_1pz4x2c">
+          <text>"RR"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w9t5os">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wue42b">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0agsqxw">
+          <text>:= ${Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0acibeo">
+          <text>ARM</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y9psna">
+          <text>5/1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07wnpdd">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hk3cxi">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1d8e8mt">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1yfhfjd">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0sa7ps8">
+        <inputEntry id="UnaryTests_0eptzme">
+          <text>"RR"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09mqmgl">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t2oqwz">
+          <text>Not 1/1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07qihdh">
+          <text>:= ${Requested Program}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0je8olg">
+          <text>ARM</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gm6shr">
+          <text>1/1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06oit5b">
+          <text>First</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gyki8f">
+          <text>:=$R{Requested LTV}</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0laf1su">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pj37ks">
+          <text>:=  $R{Requested Loan Amount}</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_11qgd2f" name="Match Loan Constraints to Lender Products">
+    <informationRequirement id="InformationRequirement_0x1onni">
+      <requiredInput href="#InputData_0fmen54" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0zsuol5">
+      <requiredDecision href="#Decision_01tjnex" />
+    </informationRequirement>
+    <knowledgeRequirement id="KnowledgeRequirement_1qx4qyw">
+      <requiredKnowledge href="#BusinessKnowledgeModel_0dejupm" />
+    </knowledgeRequirement>
+    <decisionTable id="DecisionTable_1cc22zs">
+      <input id="InputClause_1vq7n85" label="Recommended Program">
+        <inputExpression id="LiteralExpression_0faalhp" typeRef="string">
+          <text>recProg</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0g6fdp6" label="Recommended Category">
+        <inputExpression id="LiteralExpression_0u0u5cj" typeRef="string">
+          <text>reccat</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0l2eflr" label="Recommended Term">
+        <inputExpression id="LiteralExpression_0ddn3zv" typeRef="string">
+          <text>recTerm</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1pn0nu6" label="Recommended Liens">
+        <inputExpression id="LiteralExpression_0m1l5dy" typeRef="string">
+          <text>recliens</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_18n94u7" label="Months" name="months" typeRef="string" />
+      <output id="OutputClause_1lr6xlz" label="Product ID" name="prodid" typeRef="string" />
+      <rule id="DecisionRule_12n9h6b">
+        <inputEntry id="UnaryTests_104wek9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19uka4a">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09bfmhq">
+          <text>3/1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03eauin">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04br7ca">
+          <text>360</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bekpe5">
+          <text>1</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0h2r7ss">
+        <inputEntry id="UnaryTests_16myq0u">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18x2cp1">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0afda92">
+          <text>30</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tg7ddr">
+          <text>First+Second</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x70z5g">
+          <text>360</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mi8biu">
+          <text>3</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1h9mo9p">
+        <inputEntry id="UnaryTests_12qg71p">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nis3cn">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jbhf4g">
+          <text>30</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_033wfrx">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1diikht">
+          <text>360</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sc0yvh">
+          <text>4</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0m5y1f7">
+        <inputEntry id="UnaryTests_06zh98p">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12dny6k">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05k9ryp">
+          <text>40</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0febp48">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hd3u5q">
+          <text>480</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_004v4gg">
+          <text>5</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1kdkayt">
+        <inputEntry id="UnaryTests_10e5iz7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_065hqtz">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14dpvuf">
+          <text>20</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fx3ify">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_091pjcc">
+          <text>240</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15xzivu">
+          <text>6</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1stc7zb">
+        <inputEntry id="UnaryTests_0244jiy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g6k17h">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ra0294">
+          <text>15</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02ksjkw">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dj4vz6">
+          <text>180</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p0uvlz">
+          <text>7</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1o5ze52">
+        <inputEntry id="UnaryTests_0rjco7i">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ac4cns">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e6mn4x">
+          <text>10</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hkcjk5">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1lhjdsf">
+          <text>120</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13fycz0">
+          <text>8</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1taovn6">
+        <inputEntry id="UnaryTests_1vewipz">
+          <text>Prime</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12oncqx">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ohi6lx">
+          <text>1/1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zyczlg">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06sd6u9">
+          <text>360</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rpau45">
+          <text>9</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rruvlh">
+        <inputEntry id="UnaryTests_0jb6vtk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jsq5dv">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1obre0b">
+          <text>5/1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08qo8ns">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pd49g9">
+          <text>360</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0855hfh">
+          <text>10</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11hf4k5">
+        <inputEntry id="UnaryTests_05md4ju">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00q3g41">
+          <text>ARM</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wjy3q0">
+          <text>7/1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fv7k92">
+          <text>First</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qxprft">
+          <text>360</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14dam8f">
+          <text>11</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1y7y8kr">
+        <inputEntry id="UnaryTests_0xxelzc">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06rmz7d">
+          <text>Fixed</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0odnxft">
+          <text>20</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0iwcpuc">
+          <text>First+Second</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0o455cm">
+          <text>240</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1umwq3q">
+          <text>12</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_0o1byza" name="Determine monthly payment">
+    <variable id="InformationItem_0nkf2wl" />
+    <informationRequirement id="InformationRequirement_0jxlg6k">
+      <requiredDecision href="#Decision_11qgd2f" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1smnsm6">
+      <requiredInput href="#InputData_0s73ph4" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1hdoe83">
+      <requiredDecision href="#Decision_0row74g" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0fqzylh">
+      <requiredDecision href="#Decision_0v2z5kg" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1dw3z73">
+      <requiredDecision href="#Decision_022wtbd" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0y0es20">
+      <text>::=
+  $R{PMT} + $R{Taxes and Insurance} + $R{Mortgage Insurance} </text>
+    </literalExpression>
+  </decision>
+  <decision id="Decision_01tjnex" name="Generate loan contrainsts">
+    <informationRequirement id="InformationRequirement_03wyr96">
+      <requiredDecision href="#Decision_1mhn5bu" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_14rtqe7">
+      <requiredDecision href="#Decision_0u981gn" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1c5z24q">
+      <requiredDecision href="#Decision_1nr71b4" />
+    </informationRequirement>
+    <knowledgeRequirement id="KnowledgeRequirement_0kne7gh">
+      <requiredKnowledge href="#BusinessKnowledgeModel_0e5zq40" />
+    </knowledgeRequirement>
+  </decision>
+  <decision id="Decision_0dqz10g" name="Determine base rate decision table">
+    <decisionTable id="DecisionTable_0y96d4u">
+      <input id="InputClause_085ipxw" label="Product ID">
+        <inputExpression id="LiteralExpression_0vzle9h" typeRef="string">
+          <text>prodid</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0rqbqqi" label="Base Rate" name="baserate" typeRef="string" />
+      <rule id="DecisionRule_11zpw9a">
+        <inputEntry id="UnaryTests_16bdpcx">
+          <text>1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05ob2rw">
+          <text>0.04875</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vuabv8">
+        <inputEntry id="UnaryTests_1nvzfqm">
+          <text>3</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qjchiq">
+          <text>0.05875</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0z0zack">
+        <inputEntry id="UnaryTests_14jjigd">
+          <text>4</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1i3va6x">
+          <text>0.05385</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1awp06g">
+        <inputEntry id="UnaryTests_0iu04ml">
+          <text>5</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ac30tv">
+          <text>0.06</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1bnvck4">
+        <inputEntry id="UnaryTests_1u9d9fy">
+          <text>6</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gz13i1">
+          <text>0.0375</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0liipx4">
+        <inputEntry id="UnaryTests_1jogu39">
+          <text>7</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0079pm3">
+          <text>0.035</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1aj3neb">
+        <inputEntry id="UnaryTests_1xo63t0">
+          <text>8</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01tihsx">
+          <text>0.0325</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05079kf">
+        <inputEntry id="UnaryTests_12fq642">
+          <text>9</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15otbs9">
+          <text>0.0225</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mj1iq3">
+        <inputEntry id="UnaryTests_0ub6cvd">
+          <text>10</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1br0ra9">
+          <text>0.0275</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0813h90">
+        <inputEntry id="UnaryTests_011vql8">
+          <text>11</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13vjbiy">
+          <text>0.03</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0s7mvr3">
+        <inputEntry id="UnaryTests_0zvn86t">
+          <text>12</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1n4n6co">
+          <text>0.0425</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_0k2m0ex" name="Determine adjustors decision table">
+    <decisionTable id="DecisionTable_0ubxpgc">
+      <input id="InputClause_0ybi6u0" label="Recommended Program">
+        <inputExpression id="LiteralExpression_18xv495" typeRef="string">
+          <text>recProg</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0hz4pj6" label="Recommended Liens">
+        <inputExpression id="LiteralExpression_0ryzfkp" typeRef="string">
+          <text>recliens</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1jsmlar" label="Recommended 1st Lien LTV">
+        <inputExpression id="LiteralExpression_0uh05gx" typeRef="string">
+          <text>recfliens</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1y6czvo" label="Adjustor" name="adjustor" typeRef="string" />
+      <rule id="DecisionRule_0avzjit">
+        <inputEntry id="UnaryTests_0jjfqsw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tpm386">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wln6hh">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pzcthl">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vzafgo">
+        <inputEntry id="UnaryTests_1btlpbm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jm5ok8">
+          <text>First</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0j9pym1">
+          <text>[85-100]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1dwuwyx">
+          <text>0.0025</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_162m3hg">
+        <inputEntry id="UnaryTests_181suic">
+          <text>Non Prime</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y43atx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11ssc3i">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0aetmpg">
+          <text>0.01</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_0v2z5kg" name="Principle and interest calculation">
+    <variable id="InformationItem_1sy1zs9" name="PMT" typeRef="double" />
+    <informationRequirement id="InformationRequirement_19smesp">
+      <requiredDecision href="#Decision_0dqz10g" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1y274qy">
+      <requiredDecision href="#Decision_0k2m0ex" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_05reuef" expressionLanguage="feel">
+      <text>::=($R{Recommended Loan Amount}*( $R{Base Rate} + $R{Adjustor}))/(1 - Math.pow(1+($R{Base Rate} + $R{Adjustor}),-$R{Months}));</text>
+    </literalExpression>
+  </decision>
+  <decision id="Decision_022wtbd" name="Taxes and insurance decision table">
+    <variable id="InformationItem_1vzfg6e" name="taxins" typeRef="double" />
+    <literalExpression id="LiteralExpression_13v6hax" expressionLanguage="feel">
+      <text>:= $R{Recommended Loan Amount} * 0.015/12</text>
+    </literalExpression>
+  </decision>
+  <decision id="Decision_0row74g" name="Mortgage insurance decision table">
+    <decisionTable id="DecisionTable_0rc2epj">
+      <input id="InputClause_1n2mvgl" label="Recommended 1st Liens LTV">
+        <inputExpression id="LiteralExpression_1eti6pv" typeRef="string">
+          <text>recfliens</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_10w1wjy" label="Mortgage Insurance" name="morgins" typeRef="string" />
+      <rule id="DecisionRule_0qsyms2">
+        <inputEntry id="UnaryTests_11e1zbk">
+          <text>&gt; 80</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qxchse">
+          <text>:= $R{Recommended Loan Amount} * 0.0005</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_19t8rdh">
+        <inputEntry id="UnaryTests_1511v7y">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18udu3v">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_0vnqtks" dmnElementRef="BusinessKnowledgeModel_189ecfo">
+        <dc:Bounds height="46" width="135" x="282" y="567" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_08n2lxk" dmnElementRef="BusinessKnowledgeModel_0c6n241">
+        <dc:Bounds height="46" width="135" x="363" y="717" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0dwwcl9" dmnElementRef="BusinessKnowledgeModel_1ice1w6">
+        <dc:Bounds height="46" width="135" x="482" y="867" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d5deqj" dmnElementRef="KnowledgeSource_1of2fe0">
+        <dc:Bounds height="63" width="100" x="160" y="668" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0xzpj9z" dmnElementRef="KnowledgeSource_1fioz6k">
+        <dc:Bounds height="63" width="100" x="160" y="788" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1gg4oh3" dmnElementRef="BusinessKnowledgeModel_0dejupm">
+        <dc:Bounds height="46" width="135" x="612" y="267" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0sh4vxk" dmnElementRef="BusinessKnowledgeModel_0e5zq40">
+        <dc:Bounds height="46" width="135" x="594" y="417" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1el5cb7" dmnElementRef="InputData_0fmen54">
+        <dc:Bounds height="45" width="125" x="617" y="197" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1jwla1y" dmnElementRef="KnowledgeSource_0nyig68">
+        <dc:Bounds height="63" width="100" x="1560" y="558" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_015bjeh" dmnElementRef="InputData_1iay1tk">
+        <dc:Bounds height="45" width="125" x="978" y="667" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0v7x95h" dmnElementRef="InputData_0v1juyd">
+        <dc:Bounds height="45" width="125" x="978" y="767" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_00v56j7" dmnElementRef="InformationRequirement_0jxlg6k">
+        <di:waypoint x="940" y="230" />
+        <di:waypoint x="1170" y="180" />
+        <di:waypoint x="1170" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1wmjrrt" dmnElementRef="InformationRequirement_1y4075x">
+        <di:waypoint x="978" y="690" />
+        <di:waypoint x="860" y="727" />
+        <di:waypoint x="840" y="727" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1d8soat" dmnElementRef="InformationRequirement_1b2vll3">
+        <di:waypoint x="978" y="790" />
+        <di:waypoint x="860" y="753" />
+        <di:waypoint x="840" y="753" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_19piafg" dmnElementRef="KnowledgeRequirement_0gqlltv">
+        <di:waypoint x="617" y="890" />
+        <di:waypoint x="730" y="890" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1p18bl2" dmnElementRef="KnowledgeRequirement_1bicbg9">
+        <di:waypoint x="498" y="740" />
+        <di:waypoint x="660" y="740" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1poyovw" dmnElementRef="KnowledgeRequirement_1xl76r0">
+        <di:waypoint x="417" y="590" />
+        <di:waypoint x="550" y="590" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1eubuit" dmnElementRef="AuthorityRequirement_1tqq7r2">
+        <di:waypoint x="260" y="717" />
+        <di:waypoint x="360" y="750" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0mbz5gr" dmnElementRef="AuthorityRequirement_0ejtnoy">
+        <di:waypoint x="260" y="797" />
+        <di:waypoint x="360" y="750" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1krilwp" dmnElementRef="KnowledgeRequirement_0kne7gh">
+        <di:waypoint x="729" y="440" />
+        <di:waypoint x="850" y="440" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_05pmn35" dmnElementRef="KnowledgeRequirement_1qx4qyw">
+        <di:waypoint x="747" y="282" />
+        <di:waypoint x="850" y="270" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0bd9hp9" dmnElementRef="InformationRequirement_0x1onni">
+        <di:waypoint x="742" y="220" />
+        <di:waypoint x="830" y="270" />
+        <di:waypoint x="850" y="270" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0awgf1a" dmnElementRef="InformationRequirement_03wyr96">
+        <di:waypoint x="640" y="550" />
+        <di:waypoint x="895" y="500" />
+        <di:waypoint x="895" y="480" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1129shc" dmnElementRef="InformationRequirement_14rtqe7">
+        <di:waypoint x="750" y="700" />
+        <di:waypoint x="940" y="500" />
+        <di:waypoint x="940" y="480" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0uw6lvi" dmnElementRef="InformationRequirement_1c5z24q">
+        <di:waypoint x="820" y="850" />
+        <di:waypoint x="985" y="500" />
+        <di:waypoint x="985" y="480" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_02lw7v4" dmnElementRef="InputData_0s73ph4">
+        <dc:Bounds height="45" width="125" x="1438" y="248" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_01twwuh" dmnElementRef="InformationRequirement_1smnsm6">
+        <di:waypoint x="1501" y="248" />
+        <di:waypoint x="1290" y="180" />
+        <di:waypoint x="1290" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1l5ett9" dmnElementRef="Decision_1nr71b4">
+        <dc:Bounds height="80" width="180" x="730" y="850" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_155vd5m" dmnElementRef="Decision_0u981gn">
+        <dc:Bounds height="80" width="180" x="660" y="700" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0z5yaq5" dmnElementRef="Decision_1mhn5bu">
+        <dc:Bounds height="80" width="180" x="550" y="550" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0lzazo2" dmnElementRef="InformationRequirement_0zsuol5">
+        <di:waypoint x="940" y="400" />
+        <di:waypoint x="940" y="330" />
+        <di:waypoint x="940" y="310" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1k39u99" dmnElementRef="Decision_11qgd2f">
+        <dc:Bounds height="80" width="180" x="850" y="230" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1mt3tuo" dmnElementRef="Decision_0o1byza">
+        <dc:Bounds height="80" width="180" x="1140" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1jupwwt" dmnElementRef="Decision_01tjnex">
+        <dc:Bounds height="80" width="180" x="850" y="400" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0clont9" dmnElementRef="InformationRequirement_1hdoe83">
+        <di:waypoint x="1130" y="270" />
+        <di:waypoint x="1200" y="180" />
+        <di:waypoint x="1200" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0yh9aik" dmnElementRef="InformationRequirement_0fqzylh">
+        <di:waypoint x="1350" y="320" />
+        <di:waypoint x="1260" y="180" />
+        <di:waypoint x="1260" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1jgmgae" dmnElementRef="InformationRequirement_1dw3z73">
+        <di:waypoint x="1250" y="490" />
+        <di:waypoint x="1230" y="180" />
+        <di:waypoint x="1230" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1ws39h2" dmnElementRef="InformationRequirement_19smesp">
+        <di:waypoint x="1530" y="360" />
+        <di:waypoint x="1460" y="360" />
+        <di:waypoint x="1440" y="360" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1p0834t" dmnElementRef="InformationRequirement_1y274qy">
+        <di:waypoint x="1620" y="430" />
+        <di:waypoint x="1350" y="420" />
+        <di:waypoint x="1350" y="400" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0dgsxsr" dmnElementRef="AuthorityRequirement_0pq9j8m">
+        <di:waypoint x="1620" y="510" />
+        <di:waypoint x="1620" y="558" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1ltf7hl" dmnElementRef="Decision_0dqz10g">
+        <dc:Bounds height="80" width="180" x="1530" y="320" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0lmousy" dmnElementRef="Decision_0k2m0ex">
+        <dc:Bounds height="80" width="180" x="1530" y="430" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0ht71p7" dmnElementRef="Decision_0v2z5kg">
+        <dc:Bounds height="80" width="180" x="1260" y="320" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1dd3rpp" dmnElementRef="Decision_022wtbd">
+        <dc:Bounds height="80" width="180" x="1160" y="490" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0a6ozqf" dmnElementRef="Decision_0row74g">
+        <dc:Bounds height="80" width="180" x="1040" y="270" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

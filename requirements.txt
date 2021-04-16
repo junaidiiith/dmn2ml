@@ -1,0 +1,7 @@
+seaborn
+pyyaml
+tensorflow
+catboost
+xgboost
+graphviz
+statistics

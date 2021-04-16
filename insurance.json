@@ -1,0 +1,1234 @@
+{
+  "definitions": {
+    "@xmlns": "https://www.omg.org/spec/DMN/20191111/MODEL/",
+    "@xmlns:dmndi": "https://www.omg.org/spec/DMN/20191111/DMNDI/",
+    "@xmlns:dc": "http://www.omg.org/spec/DMN/20180521/DC/",
+    "@xmlns:biodi": "http://bpmn.io/schema/dmn/biodi/2.0",
+    "@xmlns:di": "http://www.omg.org/spec/DMN/20180521/DI/",
+    "@id": "Definitions_00z3oem",
+    "@name": "DRD",
+    "@namespace": "http://camunda.org/schema/1.0/dmn",
+    "@exporter": "Camunda Modeler",
+    "@exporterVersion": "4.6.0",
+    "decision": [
+      {
+        "@id": "Decision_155fels",
+        "@name": "Business Interruption insurance premium",
+        "informationRequirement": [
+          {
+            "@id": "InformationRequirement_1wdq8cv",
+            "requiredDecision": {
+              "@href": "#Decision_1c7bkb6"
+            }
+          },
+          {
+            "@id": "InformationRequirement_072sbne",
+            "requiredDecision": {
+              "@href": "#Decision_1bphfr7"
+            }
+          },
+          {
+            "@id": "InformationRequirement_0zykcw5",
+            "requiredInput": {
+              "@href": "#InputData_0jazflb"
+            }
+          },
+          {
+            "@id": "InformationRequirement_1llg7by",
+            "requiredInput": {
+              "@href": "#InputData_1s0d95u"
+            }
+          }
+        ],
+        "decisionTable": {
+          "@id": "DecisionTable_14mjpyd",
+          "input": [
+            {
+              "@id": "Input_1",
+              "@label": "Special Discount",
+              "inputExpression": {
+                "@id": "InputExpression_1",
+                "@typeRef": "integer",
+                "text": "specialdiscount"
+              }
+            },
+            {
+              "@id": "InputClause_1m0b57w",
+              "@label": "VPC Discount",
+              "inputExpression": {
+                "@id": "LiteralExpression_1odke1s",
+                "@typeRef": "integer",
+                "text": "vpcdiscount"
+              }
+            }
+          ],
+          "output": {
+            "@id": "Output_1",
+            "@label": "Business Insurance",
+            "@name": "businessinsurance",
+            "@typeRef": "double",
+            "@biodi:width": "595"
+          },
+          "rule": {
+            "@id": "DecisionRule_0yrt3dx",
+            "inputEntry": [
+              {
+                "@id": "UnaryTests_027ti9k",
+                "text": "[-100 .. 30]"
+              },
+              {
+                "@id": "UnaryTests_02bzy3t",
+                "text": "[0 .. 99]"
+              }
+            ],
+            "outputEntry": {
+              "@id": "LiteralExpression_1w1843b",
+              "text": "((elementarybonus + firebonus)*((100 - specialdiscount)/100)*((100 - vpcdiscount)/100))"
+            }
+          }
+        }
+      },
+      {
+        "@id": "Decision_13c7xgu",
+        "@name": "Fire hazard factor",
+        "informationRequirement": {
+          "@id": "InformationRequirement_0g30ggn",
+          "requiredInput": {
+            "@href": "#InputData_007a5yq"
+          }
+        },
+        "decisionTable": {
+          "@id": "DecisionTable_05r4gzg",
+          "input": {
+            "@id": "InputClause_1lygpxa",
+            "@label": "Hazard factor",
+            "inputExpression": {
+              "@id": "LiteralExpression_115edi9",
+              "@typeRef": "string",
+              "text": "hazardfactor"
+            },
+            "inputValues": {
+              "@id": "UnaryTests_1moypg1",
+              "text": "\"0\",\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\""
+            }
+          },
+          "output": {
+            "@id": "OutputClause_14nnv6w",
+            "@label": "Fire hazard factor",
+            "@name": "firehazardfactor",
+            "@typeRef": "double"
+          },
+          "rule": [
+            {
+              "@id": "DecisionRule_0pc463z",
+              "inputEntry": {
+                "@id": "UnaryTests_1j086bl",
+                "text": "\"0\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_0kqjqxf",
+                "text": "0.00026"
+              }
+            },
+            {
+              "@id": "DecisionRule_0b81iwe",
+              "inputEntry": {
+                "@id": "UnaryTests_1hrza9z",
+                "text": "\"1\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_0ddd8mt",
+                "text": "0.00051"
+              }
+            },
+            {
+              "@id": "DecisionRule_057iqwk",
+              "inputEntry": {
+                "@id": "UnaryTests_05acdna",
+                "text": "\"2\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_1jde297",
+                "text": "0.00073"
+              }
+            },
+            {
+              "@id": "DecisionRule_0kbou1y",
+              "inputEntry": {
+                "@id": "UnaryTests_0gfz8fa",
+                "text": "\"3\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_0i7u46q",
+                "text": "0.00116"
+              }
+            },
+            {
+              "@id": "DecisionRule_01ngywn",
+              "inputEntry": {
+                "@id": "UnaryTests_0bzk61a",
+                "text": "\"4\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_06qh7zb",
+                "text": "0.00145"
+              }
+            },
+            {
+              "@id": "DecisionRule_08qe4k2",
+              "inputEntry": {
+                "@id": "UnaryTests_1mibjzv",
+                "text": "\"5\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_1qdwoxf",
+                "text": "0.00189"
+              }
+            },
+            {
+              "@id": "DecisionRule_01ckug1",
+              "inputEntry": {
+                "@id": "UnaryTests_1v6pif7",
+                "text": "\"6\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_00jvcl2",
+                "text": "0.00305"
+              }
+            },
+            {
+              "@id": "DecisionRule_17bw56v",
+              "inputEntry": {
+                "@id": "UnaryTests_1f04th7",
+                "text": "\"7\""
+              },
+              "outputEntry": {
+                "@id": "LiteralExpression_0pshpk4",
+                "text": "0.00585"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "@id": "Decision_1bphfr7",
+        "@name": "Fire bonus",
+        "informationRequirement": [
+          {
+            "@id": "InformationRequirement_19becup",
+            "requiredInput": {
+              "@href": "#InputData_12yyqtc"
+            }
+          },
+          {
+            "@id": "InformationRequirement_1u9y6in",
+            "requiredInput": {
+              "@href": "#InputData_0vsat0p"
+            }
+          },
+          {
+            "@id": "InformationRequirement_0qhoen1",
+            "requiredInput": {
+              "@href": "#InputData_18nodp1"
+            }
+          },
+          {
+            "@id": "InformationRequirement_0xgre7a",
+            "requiredDecision": {
+              "@href": "#Decision_13c7xgu"
+            }
+          },
+          {
+            "@id": "InformationRequirement_1ksiifo",
+            "requiredInput": {
+              "@href": "#InputData_0q9xkvb"
+            }
+          },
+          {
+            "@id": "InformationRequirement_0tec9c8",
+            "requiredInput": {
+              "@href": "#InputData_0164s2z"
+            }
+          }
+        ],
+        "decisionTable": {
+          "@id": "DecisionTable_0bx6qwp",
+          "input": [
+            {
+              "@id": "InputClause_1swwtic",
+              "@label": "Contribution Margin",
+              "inputExpression": {
+                "@id": "LiteralExpression_0446s2w",
+                "@typeRef": "integer",
+                "text": "contributionmargin"
+              }
+            },
+            {
+              "@id": "InputClause_0ic2rn1",
+              "@label": "Fire Liability time",
+              "@biodi:width": "192",
+              "inputExpression": {
+                "@id": "LiteralExpression_1q8pwpn",
+                "@typeRef": "string",
+                "text": "fireliabilitytime"
+              },
+              "inputValues": {
+                "@id": "UnaryTests_0t3g90u",
+                "text": "\"6\",\"12\",\"18\""
+              }
+            },
+            {
+              "@id": "InputClause_1etwlhg",
+              "@label": "Trade Benefit Coverage",
+              "inputExpression": {
+                "@id": "LiteralExpression_199kean",
+                "@typeRef": "boolean",
+                "text": "tradebenefitcoverage"
+              }
+            },
+            {
+              "@id": "InputClause_1l6fa17",
+              "@label": "Gas Benefit Coverage",
+              "@biodi:width": "184",
+              "inputExpression": {
+                "@id": "LiteralExpression_141jupq",
+                "@typeRef": "boolean",
+                "text": "gasbenefitcoverage"
+              }
+            }
+          ],
+          "output": {
+            "@id": "OutputClause_1sr0b7n",
+            "@label": "Fire bonus",
+            "@name": "firebonus",
+            "@typeRef": "double",
+            "@biodi:width": "327"
+          },
+          "rule": [
+            {
+              "@id": "DecisionRule_03tiokx",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_0wxtun9",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_18z3bal",
+                  "text": "\"6\""
+                },
+                {
+                  "@id": "UnaryTests_0lhb3gc",
+                  "text": "false"
+                },
+                {
+                  "@id": "UnaryTests_13arvbq",
+                  "text": "false"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0kmehvv",
+                "text": "contributionmargin*firehazardfactor*0.75*1.15"
+              }
+            },
+            {
+              "@id": "DecisionRule_063d9fc",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_0epalrz",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0y9rsek",
+                  "text": "\"12\""
+                },
+                {
+                  "@id": "UnaryTests_0yn9eea",
+                  "text": "false"
+                },
+                {
+                  "@id": "UnaryTests_0srvjtl",
+                  "text": "false"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_1ca3wr2",
+                "text": "contributionmargin*firehazardfactor*1.15"
+              }
+            },
+            {
+              "@id": "DecisionRule_1gv9e16",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_05p3ol7",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0ws8szn",
+                  "text": "\"18\""
+                },
+                {
+                  "@id": "UnaryTests_0nefk1m",
+                  "text": "false"
+                },
+                {
+                  "@id": "UnaryTests_1o9cpsl",
+                  "text": "false"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0byv645",
+                "text": "contributionmargin*firehazardfactor*1.25*1.15"
+              }
+            },
+            {
+              "@id": "DecisionRule_06qrl2c",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_1ssqk9g",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_1u36kpl",
+                  "text": "\"6\""
+                },
+                {
+                  "@id": "UnaryTests_0muhuxn",
+                  "text": "true"
+                },
+                {
+                  "@id": "UnaryTests_1adjo32",
+                  "text": "false"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_1rnklu6",
+                "text": "contributionmargin*firehazardfactor*0.75*(1.15+0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_1h3rmhu",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_08jy3yc",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0ojijbb",
+                  "text": "\"12\""
+                },
+                {
+                  "@id": "UnaryTests_1c2wjel",
+                  "text": "true"
+                },
+                {
+                  "@id": "UnaryTests_0e5r3ac",
+                  "text": "false"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_1ixzh7h",
+                "text": "contributionmargin*firehazardfactor*(1.15+0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_05z8lus",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_0fe2wnf",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_1jd8cve",
+                  "text": "\"18\""
+                },
+                {
+                  "@id": "UnaryTests_0lmgkzp",
+                  "text": "true"
+                },
+                {
+                  "@id": "UnaryTests_1jgg93l",
+                  "text": "false"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_005037a",
+                "text": "contributionmargin*firehazardfactor*1.25*(1.15+0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_1gdrsjt",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_1c8kt05",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_14rn8wl",
+                  "text": "\"6\""
+                },
+                {
+                  "@id": "UnaryTests_12dq7ng",
+                  "text": "false"
+                },
+                {
+                  "@id": "UnaryTests_1iqprhh",
+                  "text": "true"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0i7tqap",
+                "text": "contributionmargin*firehazardfactor*0.75*(1.15+0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_1or3r4e",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_1lkknu1",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_1ky9na5",
+                  "text": "\"12\""
+                },
+                {
+                  "@id": "UnaryTests_03ynnyi",
+                  "text": "false"
+                },
+                {
+                  "@id": "UnaryTests_024yxky",
+                  "text": "true"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0mibfph",
+                "text": "contributionmargin*firehazardfactor*(1.15+0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_11i97sk",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_1c46q5y",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_13mwmol",
+                  "text": "\"18\""
+                },
+                {
+                  "@id": "UnaryTests_14t8itz",
+                  "text": "false"
+                },
+                {
+                  "@id": "UnaryTests_14v9x4s",
+                  "text": "true"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_1g2dd6u",
+                "text": "contributionmargin*firehazardfactor*1.25*(1.15+0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_0vqp6lv",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_052n1py",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0ux4yie",
+                  "text": "\"6\""
+                },
+                {
+                  "@id": "UnaryTests_15s9uqw",
+                  "text": "true"
+                },
+                {
+                  "@id": "UnaryTests_0szffvf",
+                  "text": "true"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_11834q7",
+                "text": "contributionmargin*firehazardfactor*0.75*(1.15+0.06 + 0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_1srvsjj",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_1960e95",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_1nzhck0",
+                  "text": "\"12\""
+                },
+                {
+                  "@id": "UnaryTests_1skn8mp",
+                  "text": "true"
+                },
+                {
+                  "@id": "UnaryTests_0jv0mif",
+                  "text": "true"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_11dyo39",
+                "text": "contributionmargin*firehazardfactor*(1.15+0.06 + 0.06)"
+              }
+            },
+            {
+              "@id": "DecisionRule_1oswp5q",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_13je9xe",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0ryvmf2",
+                  "text": "\"18\""
+                },
+                {
+                  "@id": "UnaryTests_045b6yw",
+                  "text": "true"
+                },
+                {
+                  "@id": "UnaryTests_0ccmkdq",
+                  "text": "true"
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0e7bk5y",
+                "text": "contributionmargin*firehazardfactor*1.25*(1.15+0.06 + 0.06)"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "@id": "Decision_1c7bkb6",
+        "@name": "Elementary bonus",
+        "informationRequirement": [
+          {
+            "@id": "InformationRequirement_0vf08ec",
+            "requiredInput": {
+              "@href": "#InputData_0164s2z"
+            }
+          },
+          {
+            "@id": "InformationRequirement_0tf1djx",
+            "requiredInput": {
+              "@href": "#InputData_1f5arqa"
+            }
+          },
+          {
+            "@id": "InformationRequirement_1hqkzy8",
+            "requiredInput": {
+              "@href": "#InputData_0k0h2zg"
+            }
+          }
+        ],
+        "decisionTable": {
+          "@id": "DecisionTable_17pp5tt",
+          "input": [
+            {
+              "@id": "InputClause_0hrwbir",
+              "@label": "Contribution Margin",
+              "inputExpression": {
+                "@id": "LiteralExpression_12jheii",
+                "@typeRef": "integer",
+                "text": "contributionmargin"
+              }
+            },
+            {
+              "@id": "InputClause_1p71lf7",
+              "@label": "Elementary liability period",
+              "inputExpression": {
+                "@id": "LiteralExpression_0damr5s",
+                "@typeRef": "string",
+                "text": "elementaryliabilityperiod"
+              },
+              "inputValues": {
+                "@id": "UnaryTests_0to73fz",
+                "text": "\"3\",\"6\",\"9\""
+              }
+            }
+          ],
+          "output": {
+            "@id": "OutputClause_0pkhqts",
+            "@label": "Elementary Bonus",
+            "@name": "elementarybonus",
+            "@typeRef": "string"
+          },
+          "rule": [
+            {
+              "@id": "DecisionRule_0rcl5p3",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_1o204se",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0q8gc1o",
+                  "text": "\"3\""
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_05wq78w",
+                "text": "contributionmargin*0.00044*1.15"
+              }
+            },
+            {
+              "@id": "DecisionRule_0zif0ky",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_05p1bqs",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_1368kd2",
+                  "text": "\"6\""
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0pd21zo",
+                "text": "contributionmargin*0.00058*1.15"
+              }
+            },
+            {
+              "@id": "DecisionRule_1ckpywh",
+              "inputEntry": [
+                {
+                  "@id": "UnaryTests_19jxygh",
+                  "text": "[10000 .. 99000000]"
+                },
+                {
+                  "@id": "UnaryTests_0jhyyc3",
+                  "text": "\"9\""
+                }
+              ],
+              "outputEntry": {
+                "@id": "LiteralExpression_0kl5a6i",
+                "text": "contributionmargin*0.00073*1.15"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "inputData": [
+      {
+        "@id": "InputData_1s0d95u",
+        "@name": "Special discount"
+      },
+      {
+        "@id": "InputData_0jazflb",
+        "@name": "VPC discount"
+      },
+      {
+        "@id": "InputData_1f5arqa",
+        "@name": "Elementary coverage"
+      },
+      {
+        "@id": "InputData_0164s2z",
+        "@name": "Contribution margin"
+      },
+      {
+        "@id": "InputData_0q9xkvb",
+        "@name": "Fire cover"
+      },
+      {
+        "@id": "InputData_007a5yq",
+        "@name": "Hazard factor"
+      },
+      {
+        "@id": "InputData_18nodp1",
+        "@name": "Liability time fire"
+      },
+      {
+        "@id": "InputData_0vsat0p",
+        "@name": "Trade cover benefit"
+      },
+      {
+        "@id": "InputData_12yyqtc",
+        "@name": "Gas cover benefit"
+      },
+      {
+        "@id": "InputData_0k0h2zg",
+        "@name": "Liability time element"
+      }
+    ],
+    "knowledgeSource": [
+      {
+        "@id": "KnowledgeSource_1qo0yeh",
+        "@name": "Element coverage package",
+        "authorityRequirement": {
+          "@id": "AuthorityRequirement_1mpjuko",
+          "requiredDecision": {
+            "@href": "#Decision_1c7bkb6"
+          }
+        }
+      },
+      {
+        "@id": "KnowledgeSource_0ato0kx",
+        "@name": "Fire cover package",
+        "authorityRequirement": {
+          "@id": "AuthorityRequirement_1prc42i",
+          "requiredDecision": {
+            "@href": "#Decision_1bphfr7"
+          }
+        }
+      }
+    ],
+    "dmndi:DMNDI": {
+      "dmndi:DMNDiagram": {
+        "dmndi:DMNShape": [
+          {
+            "@dmnElementRef": "Decision_155fels",
+            "dc:Bounds": {
+              "@height": "80",
+              "@width": "180",
+              "@x": "750",
+              "@y": "210"
+            }
+          },
+          {
+            "@id": "DMNShape_17szfez",
+            "@dmnElementRef": "InputData_1s0d95u",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "517",
+              "@y": "88"
+            }
+          },
+          {
+            "@id": "DMNShape_00r9sj2",
+            "@dmnElementRef": "InputData_0jazflb",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "997",
+              "@y": "88"
+            }
+          },
+          {
+            "@id": "DMNShape_178q8nu",
+            "@dmnElementRef": "InputData_1f5arqa",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "357",
+              "@y": "587"
+            }
+          },
+          {
+            "@id": "DMNShape_1tv22di",
+            "@dmnElementRef": "InputData_0164s2z",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "697",
+              "@y": "587"
+            }
+          },
+          {
+            "@id": "DMNShape_0x26f5r",
+            "@dmnElementRef": "InputData_0q9xkvb",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "1118",
+              "@y": "588"
+            }
+          },
+          {
+            "@id": "DMNShape_0chuc2g",
+            "@dmnElementRef": "KnowledgeSource_1qo0yeh",
+            "dc:Bounds": {
+              "@height": "63",
+              "@width": "100",
+              "@x": "160",
+              "@y": "389"
+            }
+          },
+          {
+            "@id": "DMNShape_12uko8k",
+            "@dmnElementRef": "KnowledgeSource_0ato0kx",
+            "dc:Bounds": {
+              "@height": "63",
+              "@width": "100",
+              "@x": "1420",
+              "@y": "399"
+            }
+          },
+          {
+            "@id": "DMNShape_0adfzhb",
+            "@dmnElementRef": "InputData_007a5yq",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "1698",
+              "@y": "488"
+            }
+          },
+          {
+            "@id": "DMNShape_04mbt4q",
+            "@dmnElementRef": "InputData_18nodp1",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "1062",
+              "@y": "259"
+            }
+          },
+          {
+            "@id": "DMNShape_0szsnwf",
+            "@dmnElementRef": "InputData_0vsat0p",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "1358",
+              "@y": "259"
+            }
+          },
+          {
+            "@id": "DMNShape_0v7fuks",
+            "@dmnElementRef": "InputData_12yyqtc",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "1628",
+              "@y": "260"
+            }
+          },
+          {
+            "@id": "DMNShape_1ummty6",
+            "@dmnElementRef": "InputData_0k0h2zg",
+            "dc:Bounds": {
+              "@height": "45",
+              "@width": "125",
+              "@x": "338",
+              "@y": "259"
+            }
+          },
+          {
+            "@id": "DMNShape_0n3zz5m",
+            "@dmnElementRef": "Decision_13c7xgu",
+            "dc:Bounds": {
+              "@height": "80",
+              "@width": "180",
+              "@x": "1500",
+              "@y": "610"
+            }
+          },
+          {
+            "@id": "DMNShape_15vk8tv",
+            "@dmnElementRef": "Decision_1bphfr7",
+            "dc:Bounds": {
+              "@height": "80",
+              "@width": "180",
+              "@x": "1080",
+              "@y": "390"
+            }
+          },
+          {
+            "@id": "DMNShape_0r5jwq7",
+            "@dmnElementRef": "Decision_1c7bkb6",
+            "dc:Bounds": {
+              "@height": "80",
+              "@width": "180",
+              "@x": "470",
+              "@y": "380"
+            }
+          }
+        ],
+        "dmndi:DMNEdge": [
+          {
+            "@id": "DMNEdge_0qe47fd",
+            "@dmnElementRef": "InformationRequirement_19becup",
+            "di:waypoint": [
+              {
+                "@x": "1691",
+                "@y": "305"
+              },
+              {
+                "@x": "1215",
+                "@y": "370"
+              },
+              {
+                "@x": "1215",
+                "@y": "390"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_0jed2zd",
+            "@dmnElementRef": "InformationRequirement_1u9y6in",
+            "di:waypoint": [
+              {
+                "@x": "1421",
+                "@y": "304"
+              },
+              {
+                "@x": "1170",
+                "@y": "370"
+              },
+              {
+                "@x": "1170",
+                "@y": "390"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_0csuvdv",
+            "@dmnElementRef": "InformationRequirement_0qhoen1",
+            "di:waypoint": [
+              {
+                "@x": "1125",
+                "@y": "304"
+              },
+              {
+                "@x": "1125",
+                "@y": "370"
+              },
+              {
+                "@x": "1125",
+                "@y": "390"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_12rj9fp",
+            "@dmnElementRef": "AuthorityRequirement_1prc42i",
+            "di:waypoint": [
+              {
+                "@x": "1260",
+                "@y": "430"
+              },
+              {
+                "@x": "1420",
+                "@y": "430"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_1y84mrh",
+            "@dmnElementRef": "InformationRequirement_0g30ggn",
+            "di:waypoint": [
+              {
+                "@x": "1761",
+                "@y": "533"
+              },
+              {
+                "@x": "1590",
+                "@y": "590"
+              },
+              {
+                "@x": "1590",
+                "@y": "610"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_1s6nmsf",
+            "@dmnElementRef": "InformationRequirement_0xgre7a",
+            "di:waypoint": [
+              {
+                "@x": "1590",
+                "@y": "610"
+              },
+              {
+                "@x": "1215",
+                "@y": "490"
+              },
+              {
+                "@x": "1215",
+                "@y": "470"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_1v3ettf",
+            "@dmnElementRef": "InformationRequirement_1ksiifo",
+            "di:waypoint": [
+              {
+                "@x": "1181",
+                "@y": "588"
+              },
+              {
+                "@x": "1170",
+                "@y": "490"
+              },
+              {
+                "@x": "1170",
+                "@y": "470"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_0g6mhqx",
+            "@dmnElementRef": "InformationRequirement_0tec9c8",
+            "di:waypoint": [
+              {
+                "@x": "760",
+                "@y": "587"
+              },
+              {
+                "@x": "1125",
+                "@y": "490"
+              },
+              {
+                "@x": "1125",
+                "@y": "470"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_0wmkqwy",
+            "@dmnElementRef": "InformationRequirement_0vf08ec",
+            "di:waypoint": [
+              {
+                "@x": "760",
+                "@y": "587"
+              },
+              {
+                "@x": "590",
+                "@y": "480"
+              },
+              {
+                "@x": "590",
+                "@y": "460"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_172cv44",
+            "@dmnElementRef": "InformationRequirement_0tf1djx",
+            "di:waypoint": [
+              {
+                "@x": "420",
+                "@y": "587"
+              },
+              {
+                "@x": "530",
+                "@y": "480"
+              },
+              {
+                "@x": "530",
+                "@y": "460"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_118f989",
+            "@dmnElementRef": "AuthorityRequirement_1mpjuko",
+            "di:waypoint": [
+              {
+                "@x": "470",
+                "@y": "420"
+              },
+              {
+                "@x": "260",
+                "@y": "420"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_06fsxk6",
+            "@dmnElementRef": "InformationRequirement_1hqkzy8",
+            "di:waypoint": [
+              {
+                "@x": "401",
+                "@y": "304"
+              },
+              {
+                "@x": "560",
+                "@y": "360"
+              },
+              {
+                "@x": "560",
+                "@y": "380"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_18glg0f",
+            "@dmnElementRef": "InformationRequirement_1wdq8cv",
+            "di:waypoint": [
+              {
+                "@x": "560",
+                "@y": "380"
+              },
+              {
+                "@x": "810",
+                "@y": "310"
+              },
+              {
+                "@x": "810",
+                "@y": "290"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_02grx0t",
+            "@dmnElementRef": "InformationRequirement_072sbne",
+            "di:waypoint": [
+              {
+                "@x": "1170",
+                "@y": "390"
+              },
+              {
+                "@x": "870",
+                "@y": "310"
+              },
+              {
+                "@x": "870",
+                "@y": "290"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_14hihqs",
+            "@dmnElementRef": "InformationRequirement_0zykcw5",
+            "di:waypoint": [
+              {
+                "@x": "1060",
+                "@y": "133"
+              },
+              {
+                "@x": "870",
+                "@y": "190"
+              },
+              {
+                "@x": "870",
+                "@y": "210"
+              }
+            ]
+          },
+          {
+            "@id": "DMNEdge_1a2gn32",
+            "@dmnElementRef": "InformationRequirement_1llg7by",
+            "di:waypoint": [
+              {
+                "@x": "580",
+                "@y": "133"
+              },
+              {
+                "@x": "810",
+                "@y": "190"
+              },
+              {
+                "@x": "810",
+                "@y": "210"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
